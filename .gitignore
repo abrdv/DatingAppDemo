@@ -485,3 +485,4 @@ $RECYCLE.BIN/
 /API/appsettings.json
 /API/Properties/launchSettings.json
 /API/Properties/serviceDependencies.json
+/API/Properties/serviceDependencies.local.json
