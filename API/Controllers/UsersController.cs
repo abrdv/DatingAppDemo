@@ -4,11 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
 
-namespace API.Controllers
-{
-    [ApiController]
-    [Route ("api/[controller]")]    //  /api/users
-    public class UsersController(DataContext dataContext) : ControllerBase
+namespace API.Controllers;
+
+    public class UsersController(DataContext dataContext) : BaseAPIController
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
@@ -76,4 +74,4 @@ namespace API.Controllers
         }
     }
     
-}
+

@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    },
+    {
+      "name": "C#: API Debug",
+      "projectPath": "${workspaceFolder}/API.csproj",
+      "request": "launch",
+      "type": "dotnet"
+    }
+
+  ]
+
+}
