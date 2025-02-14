@@ -1,37 +1,44 @@
 ﻿using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
 
 namespace API.Controllers;
-
+[Authorize]
     public class UsersController(DataContext dataContext) : BaseAPIController
     {
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+    
+    [AllowAnonymous]    
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         { 
             var users = await dataContext.Users.ToListAsync();
             //if (users == null || users.Count == 0 ) {return NotFound();}
             return users;
         }
-        [HttpGet("{id}")]   //  /api/users/2
-        public async Task<ActionResult<AppUser>> GetUser(int id)
+    
+    [Authorize]
+    [HttpGet("{id}")]   //  /api/users/2
+    public async Task<ActionResult<AppUser>> GetUser(int id)
         {
             var user = await dataContext.Users.FindAsync(id);
             if (user == null) { return NotFound(); }
             return user;
         }
-        [HttpPost]   //  /api/users
-        public async Task<ActionResult<AppUser>> PostUser(AppUser user)
+    
+    [HttpPost]   //  /api/users
+    public async Task<ActionResult<AppUser>> PostUser(AppUser user)
         {
             await dataContext.Users.AddAsync(user);
             await dataContext.SaveChangesAsync();
             //return CreatedAtAction(nameof(AppUser), new { id = user.Id }, user); //generate error
             return NoContent();
         }
-        [HttpPut("{id}")]
-        public async Task<ActionResult<AppUser>> PutUser(int id, AppUser user)
+    
+    [HttpPut("{id}")]
+    public async Task<ActionResult<AppUser>> PutUser(int id, AppUser user)
         {
             if (id != user.Id)
             {
@@ -58,8 +65,9 @@ namespace API.Controllers;
 
             return NoContent();
         }
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser(int id)
+    
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteUser(int id)
         {
             var userItem = await dataContext.Users.FindAsync(id);
             if (userItem == null)
