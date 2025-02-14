@@ -15,7 +15,7 @@ namespace API.Controllers;
             //if (users == null || users.Count == 0 ) {return NotFound();}
             return users;
         }
-        [HttpGet("{id}")]   //  /api/users/2dot
+        [HttpGet("{id}")]   //  /api/users/2
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
             var user = await dataContext.Users.FindAsync(id);
@@ -31,7 +31,7 @@ namespace API.Controllers;
             return NoContent();
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<AppUser>> PutUser(long id, AppUser user)
+        public async Task<ActionResult<AppUser>> PutUser(int id, AppUser user)
         {
             if (id != user.Id)
             {
@@ -59,7 +59,7 @@ namespace API.Controllers;
             return NoContent();
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<AppUser>> DeleteUser(long id)
+        public async Task<ActionResult> DeleteUser(int id)
         {
             var userItem = await dataContext.Users.FindAsync(id);
             if (userItem == null)
