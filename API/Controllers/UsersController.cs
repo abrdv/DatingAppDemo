@@ -27,7 +27,7 @@ namespace API.Controllers;
             if (user == null) { return NotFound(); }
             return user;
         }
-    
+
     [HttpPost]   //  /api/users
     public async Task<ActionResult<AppUser>> PostUser(AppUser user)
         {
@@ -36,7 +36,7 @@ namespace API.Controllers;
             //return CreatedAtAction(nameof(AppUser), new { id = user.Id }, user); //generate error
             return NoContent();
         }
-    
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<AppUser>> PutUser(int id, AppUser user)
         {
@@ -65,7 +65,7 @@ namespace API.Controllers;
 
             return NoContent();
         }
-    
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUser(int id)
         {

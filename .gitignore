@@ -486,3 +486,7 @@ $RECYCLE.BIN/
 /API/Properties/launchSettings.json
 /API/Properties/serviceDependencies.json
 /API/Properties/serviceDependencies.local.json
+/APIMV/Properties/serviceDependencies.json
+/APIMV/Properties/launchSettings.json
+/APIMV/Properties/serviceDependencies.local.json
+/APIMV/appsettings.json
