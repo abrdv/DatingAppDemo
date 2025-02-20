@@ -34,3 +34,7 @@ ng g c messages --skip-tests
 ng g c lists --skip-tests
 ng g c members/member-detail --skip-tests
 ng g c members/member-list --skip-tests
+ng g c errors/test-errors --skip-tests
+ng g interceptor _interceptors/error --skip-tests
+>ng g c errors/not-found --skip-tests
+>ng g c errors/server-error --skip-tests
