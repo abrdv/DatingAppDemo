@@ -38,3 +38,55 @@ ng g c errors/test-errors --skip-tests
 ng g interceptor _interceptors/error --skip-tests
 >ng g c errors/not-found --skip-tests
 >ng g c errors/server-error --skip-tests
+https://json-generator.com/
+[
+  '{{repeat(5, 7)}}',
+  {
+    UserName: '{{firstName("female")}}',
+    gender: 'female',
+    DateOfBirth:'{{date(new Date(1970, 0, 1), new Date(2000, 11, 31), "YYYY-MM-dd")}}',
+    KnownAs: function(){return this.UserName; },
+    Created: '{{date(new Date(2025, 0, 1), new Date(), "YYYY-MM-dd")}}',
+    LastActive: '{{date(new Date(2025, 1, 1), new Date(), "YYYY-MM-dd")}}',
+    Introduction: '{{lorem(1, "paragraphs")}}',
+    LookingFor: '{{lorem(1, "paragraphs")}}',
+    Interests: '{{lorem(1, "sentences")}}',
+    City: '{{city()}}',
+    Country: '{{country()}}',
+    Photos: [
+      {
+        PhotoUrl: function(num){
+          return 'https://randomuser.me/api/portraits/women/' + num.integer(1, 99) + '.jpg';    
+        },
+        IsMain: true
+      }
+    ]
+  }
+]
+
+[
+  '{{repeat(5, 7)}}',
+  {
+    UserName: '{{firstName("male")}}',
+    gender: 'male',
+    DateOfBirth:'{{date(new Date(1970, 0, 1), new Date(2000, 11, 31), "YYYY-MM-dd")}}',
+    KnownAs: function(){return this.UserName; },
+    Created: '{{date(new Date(2025, 0, 1), new Date(), "YYYY-MM-dd")}}',
+    LastActive: '{{date(new Date(2025, 1, 1), new Date(), "YYYY-MM-dd")}}',
+    Introduction: '{{lorem(1, "paragraphs")}}',
+    LookingFor: '{{lorem(1, "paragraphs")}}',
+    Interests: '{{lorem(1, "sentences")}}',
+    City: '{{city()}}',
+    Country: '{{country()}}',
+    Photos: [
+      {
+        PhotoUrl: function(num){
+          return 'https://randomuser.me/api/portraits/men/' + num.integer(1, 99) + '.jpg';    
+        },
+        IsMain: true
+      }
+    ]
+  }
+]
+dotnet ef migrations add UpdatedUserEntity
+dotnet ef database drop

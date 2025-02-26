@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{77748F22-97EB-42C7-8ED3-E58586226C34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIMV", "APIMV\APIMV.csproj", "{389C5A4E-94CA-4778-993F-06C8084A7213}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIMV", "APIMV\APIMV.csproj", "{389C5A4E-94CA-4778-993F-06C8084A7213}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
