@@ -90,3 +90,14 @@ https://json-generator.com/
 ]
 dotnet ef migrations add UpdatedUserEntity
 dotnet ef database drop
+
+https://transform.tools/json-to-typescript
+{"id":13,"userName":"baker","age":40,"photoUrl":"https://randomuser.me/api/portraits/men/45.jpg","knownAs":"Baker","created":"2025-02-04T00:00:00","lastActive":"2025-02-25T00:00:00","gender":"male","introduction":"Nulla voluptate aute duis Lorem magna ex quis aliqua nisi nisi qui reprehenderit. Dolor velit cupidatat qui ea labore exercitation ullamco. Officia occaecat ex consequat ad reprehenderit exercitation. Aute in tempor deserunt fugiat occaecat.\r\n","interests":"Do reprehenderit amet eu incididunt adipisicing consequat ex consectetur tempor.","lookingFor":"Veniam pariatur Lorem nostrud mollit proident cillum elit sunt incididunt. Pariatur fugiat cupidatat sit sit proident minim. Est velit laboris nisi aliquip ea magna. Pariatur cupidatat velit aliqua consequat occaecat elit ea sit esse voluptate aute sunt sit.\r\n","city":"Loma","country":"Mali","photos":[{"id":13,"photoUrl":"https://randomuser.me/api/portraits/men/45.jpg","isMain":true}]}
+
+D:\Projects\DotNet\DatingApp\client>ng g s _services/members --skip-tests
+
+D:\Projects\DotNet\DatingApp\client>ng g --help
+
+D:\Projects\DotNet\DatingApp\client>ng g environments
+
+

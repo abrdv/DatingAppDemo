@@ -44,6 +44,9 @@ public class AccountController(DataContext context, ITokenService tokenService):
         {
             if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
         }
+
+        //logger.Info("UserName: " + user.UserName + ", PasswordSalt:" + user.PasswordSalt + ", computedHash:" + computedHash + ", Password: "+ loginDto.Password);
+
         return new UserDto
         {
             Username = user.UserName,
