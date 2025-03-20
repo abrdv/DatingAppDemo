@@ -1,12 +1,6 @@
 ﻿using AguaSensorsJSON2DB.Data;
 using AguaSensorsJSON2DB.Services;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AguaSensorsJSON2DB.Extentions
 {
@@ -16,15 +10,15 @@ namespace AguaSensorsJSON2DB.Extentions
             IConfiguration config)
         {
             services.AddHttpService(config);
-
             services.AddDbContext<SensorContext>(opt =>
             {
-                opt.UseSqlite(config["DefaultConnection"]);
+                opt.UseSqlite(config["ConnectionStrings:DefaultConnection"]);
             });
             services.AddLogging();
             services.AddHttpClient();
+            services.AddHostedService<WorkerDownloadSensorsService>();
+            services.AddHostedService<WorkerGetDataSensorService>();
 
-            services.AddHostedService<Worker>();
             return services;
         }
     }

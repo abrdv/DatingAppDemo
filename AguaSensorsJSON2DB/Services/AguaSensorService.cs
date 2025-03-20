@@ -29,7 +29,7 @@ namespace AguaSensorsJSON2DB.Services
             using (HttpClient client = new HttpClient())
             {
                 
-                var response = await client.GetAsync(_configuration["BaseAddress"]+ _configuration["CatalogAddress"]);
+                var response = await client.GetAsync(_configuration["Url:BaseAddress"]+ _configuration["Url:CatalogAddress"]);
                 if (response.IsSuccessStatusCode)
                 {
                     response.EnsureSuccessStatusCode();

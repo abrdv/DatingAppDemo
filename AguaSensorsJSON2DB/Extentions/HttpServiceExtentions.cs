@@ -1,4 +1,4 @@
-﻿using AguaSensorsJSON2DB.Services;
+﻿using AguaSensorsJSON2DB.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace AguaSensorsJSON2DB.Extentions
         public static IServiceCollection AddHttpService(this IServiceCollection services,
             IConfiguration config)
         {
-            var BaseAddress = config["BaseAddress"] ?? throw new Exception("BaseAddress not found");
+            var BaseAddress = config["Url:BaseAddress"] ?? throw new Exception("BaseAddress not found");
             services.AddHttpClient<AcaWebClient>(client =>
             {
                 client.BaseAddress = new Uri(BaseAddress);

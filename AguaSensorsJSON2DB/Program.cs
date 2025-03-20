@@ -1,18 +1,16 @@
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using AguaSensorsJSON2DB.Data;
-using AguaSensorsJSON2DB;
-using AguaSensorsJSON2DB.Services;
 using AguaSensorsJSON2DB.Extentions;
+using AguaSensorsJSON2DB.Data;
+using Microsoft.EntityFrameworkCore;
 
 try
 {
+    /*
     Log.Logger = new LoggerConfiguration()
         .ReadFrom.Configuration(new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .Build())
         .CreateLogger();
-    
+   */
     var configuration = new ConfigurationBuilder()
         .AddEnvironmentVariables()
         .AddCommandLine(args)
@@ -20,26 +18,43 @@ try
         .Build();
 
     IHost host = Host.CreateDefaultBuilder(args)
-        .ConfigureAppConfiguration(builder => {
+        .ConfigureAppConfiguration(builder =>
+        {
             builder.AddConfiguration(configuration);
         })
-        .UseSerilog()
+        //.UseSerilog()
         .ConfigureServices(services =>
         {
             services.AddApplicationServices(configuration);
             //services.AddScoped<ISensorService, SensorService>();
-        })
-        .Build();
+        }).Build();
+        
+    
+    var logger = host.Services.GetRequiredService<ILogger<Program>>();
+    
+    using var scope = host.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    {
+        try
+        {
+            var context = scope.ServiceProvider.GetRequiredService<SensorContext>();
+            await context.Database.MigrateAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred during migration");
+        }
+    }
     await host.RunAsync();
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Host terminated unexpectedly");
+    Console.WriteLine(ex );
     return 1;
 }
 finally
 {
-    Log.CloseAndFlush();
+    //Log.CloseAndFlush();
 }
 
 return 0;
