@@ -30,7 +30,8 @@ namespace AguaSensorsJSON2DB.Services
         protected override async Task Process()
         {
             //
-            decimal valueInt = 0;
+            decimal valueDecimal = 0;
+            DateTime dateTime;
             DateTime date = DateTime.UtcNow.Date;
             using (var scope = _scopeFactory.CreateAsyncScope())
             {
@@ -48,34 +49,48 @@ namespace AguaSensorsJSON2DB.Services
                         {
                             var response = await base._acaWebClient.GetDataAsync(entry.Provider, entry.Sensor);
                             response.EnsureSuccessStatusCode();
-                            var json = await response.Content.ReadAsStringAsync() ?? throw new Exception("No JSON getting from site");
+                            var json = await response.Content.ReadAsStringAsync();
+                            if (json == null) 
+                            { 
+                                continue; 
+                            }
                             AguaSensorDataJSON? dataJSON = JsonConvert.DeserializeObject<AguaSensorDataJSON>(json);
-                            if (dataJSON != null)
-                            {
-                                //json = {"observations":[{"value":"42.009","timestamp":"20/03/2025T07:50:00","location":""}]}
-                                if (dataJSON.observations.Count() > 0 &&) {
-                                    var value = dataJSON.observations[0];
-                                    //Console.WriteLine($"dataJSON = {dataJSON.observations[0].value}, value = {value}");
-
-                                    if (value != null)
-                                    {
-                                        await context.AguaSensorData.AddAsync(new AguaSensorData
-                                        {
-                                            AguaSensorDBId = entry.Id,
-                                            Provider = entry.Provider,
-                                            Sensor = entry.Sensor,
-                                            Description = entry.Description,
-                                            Value = dataJSON.observations[0].value,
-                                            Date = date,
-                                        });
-                                        Console.WriteLine($"Id {entry.Id} Provider {entry.Provider} Sensor {entry.Sensor} valueInt {valueInt} added");
-                                    }
+                            if (dataJSON?.observations[0]?.value == null)
+                                {
+                                continue;
+                                } else 
+                                {
+                                    valueDecimal = dataJSON.observations[0].value ?? 0m;
                                 }
+                            if (dataJSON?.observations[0]?.timestamp == null)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                if (DateTime.TryParseExact(dataJSON?.observations[0]?.timestamp, "dd/MM/yyyyTHH:mm:ss", null, System.Globalization.DateTimeStyles.None, out dateTime))
+                                {
+                                    Console.WriteLine($"dateTime = {dateTime}");
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
+                            await context.AguaSensorData.AddAsync(new AguaSensorData
+                            {
+                                AguaSensorDBId = entry.Id,
+                                Provider = entry.Provider ?? "",
+                                Sensor = entry.Sensor ?? "",
+                                Description = entry.Description ?? "",
+                                Value = valueDecimal,
+                                TimeStamp = dateTime,
+                                Date = date,
+                            });
+                             Console.WriteLine($"Id {entry.Id} Provider {entry.Provider} Sensor {entry.Sensor} valueDecimal {valueDecimal} added");
                             }
                         }
                     }
-                    
-                }
                 context.SaveChangesAsync();
             }
 

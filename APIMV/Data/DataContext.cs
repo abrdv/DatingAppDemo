@@ -1,4 +1,4 @@
-﻿using APIMV.DTOs;
+﻿using APIMV.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace APIMV.Data
@@ -6,6 +6,6 @@ namespace APIMV.Data
     public class DataContext(DbContextOptions options) : DbContext(options)
     {
 
-        public DbSet<SensorDTO> WaterSensors { get; set; }
+        public DbSet<AguaSensorData> AguaSensorData { get; set; }
     }
 }

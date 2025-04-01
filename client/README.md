@@ -100,4 +100,4 @@ D:\Projects\DotNet\DatingApp\client>ng g --help
 
 D:\Projects\DotNet\DatingApp\client>ng g environments
 
-
+https://www.npmjs.com/package/ngx-spinner

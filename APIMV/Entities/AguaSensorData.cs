@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-namespace AguaSensorsJSON2DB.Entities
+namespace APIMV.Entities
 {
     public class AguaSensorData
     {
