@@ -10,7 +10,7 @@ using API.Entities;
 namespace API.Controllers;
 [Authorize]
 public class UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService) : BaseAPIController
-    {
+{
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
     {
@@ -24,7 +24,7 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
     public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
         var user = await userRepository.GetMemberAsync(username);
-        if (user == null) return NotFound(); 
+        if (user == null) return NotFound();
         return user;
     }
 
@@ -54,5 +54,5 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
         if (await userRepository.SaveUsersAsync()) return mapper.Map<PhotoDto>(photo);
         return BadRequest("Problem adding photo");
     }
-    
+}
 
