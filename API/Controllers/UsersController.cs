@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using System.Security.Claims;
+using API.Extentions;
+using API.Entities;
 
 namespace API.Controllers;
 [Authorize]
-public class UsersController(IUserRepository userRepository, IMapper mapper) : BaseAPIController
+public class UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService) : BaseAPIController
     {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
@@ -29,15 +31,28 @@ public class UsersController(IUserRepository userRepository, IMapper mapper) : B
     [HttpPut]
     public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
     {
-        var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (username == null) return Unauthorized();
-        var user = await userRepository.GetUserByUsernameAsync(username);
-        if (user == null) return BadRequest("Not Find User");
+        var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
+        if (user == null) return BadRequest("No user found");
         mapper.Map(memberUpdateDto, user);
-        userRepository.Update(user);
+        //userRepository.Update(user);
         if (await userRepository.SaveUsersAsync()) return NoContent();
         return BadRequest("Failed to update user");
     }
-}
+    [HttpPost("add-photo")]
+    public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
+    {
+        var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
+        if (user == null) return BadRequest("Cannot find user");
+        var result = await photoService.AddPhotoAsync(file);
+        if (result.Error != null) return BadRequest(result.Error.Message);
+        var photo = new Photo
+        {
+            PhotoUrl = result.SecureUrl.AbsoluteUri,
+            PublicId = result.PublicId
+        };
+        user.Photos.Add(photo);
+        if (await userRepository.SaveUsersAsync()) return mapper.Map<PhotoDto>(photo);
+        return BadRequest("Problem adding photo");
+    }
     
 
