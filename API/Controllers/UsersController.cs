@@ -32,7 +32,7 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
     public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
     {
         var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
-        if (user == null) return BadRequest("No user found");
+        if (user == null) return BadRequest("No user found. Cannot update user");
         mapper.Map(memberUpdateDto, user);
         //userRepository.Update(user);
         if (await userRepository.SaveUsersAsync()) return NoContent();
@@ -42,17 +42,21 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
     public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
     {
         var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
-        if (user == null) return BadRequest("Cannot find user");
-        var result = await photoService.AddPhotoAsync(file);
-        if (result.Error != null) return BadRequest(result.Error.Message);
-        var photo = new Photo
+        if (user != null)
         {
-            PhotoUrl = result.SecureUrl.AbsoluteUri,
-            PublicId = result.PublicId
-        };
-        user.Photos.Add(photo);
-        if (await userRepository.SaveUsersAsync()) return mapper.Map<PhotoDto>(photo);
-        return BadRequest("Problem adding photo");
+            var result = await photoService.AddPhotoAsync(file);
+            if (result.Error != null) return BadRequest(result.Error.Message);
+            var photo = new Photo
+            {
+                PhotoUrl = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+            user.Photos.Add(photo);
+            if (await userRepository.SaveUsersAsync()) return CreatedAtAction(nameof(GetUser), new { username = user.UserName }, mapper.Map<PhotoDto>(photo));
+            return BadRequest("Problem adding photo");
+        }
+
+        return BadRequest("Cannot find user");
     }
 }
 
