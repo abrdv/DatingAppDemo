@@ -29,14 +29,15 @@ export class MemberEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMember();
-  }
+  };
+
   loadMember() {
     const user = this.accountService.currentUser();
     if (!user) return;
     this.memberService.getMember(user.username).subscribe({
       next: member => this.member = member
     })
-  }
+  };
 
   updateMember() {
     this.memberService.updateMember(this.editForm?.value).subscribe({
@@ -45,6 +46,10 @@ export class MemberEditComponent implements OnInit {
         this.editForm?.reset(this.member);
       },
     });
+  };
+  onMemberChange(event: Member) {
+    this.member = event;
+  };
 
-  }
 }
+

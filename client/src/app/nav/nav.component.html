@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <a routerLink="/" class="navbar-brand" routerLinkActive="active">Dating App</a>
 
-        
+
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
 
             @if (accountService.currentUser()){
@@ -20,10 +20,14 @@
                 <a routerLink="/errors" routerLinkActive="active" class="nav-link">Errors</a>
             </li>
         </ul>
-        
+
         @if (accountService.currentUser()){
         <div dropdown class="dropdown">
-            <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">
+          <img
+            class="me-2"
+            src="{{accountService.currentUser()?.photoUrl || './assets/user.png'}}"
+            alt="User">
+          <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">
                 Welcome {{accountService.currentUser()?.username | titlecase}}
             </a>
             <div *dropdownMenu class="dropdown-menu">
