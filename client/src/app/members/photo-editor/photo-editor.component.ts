@@ -75,10 +75,23 @@ next: _ => {
 
       this.uploader.onSuccessItem = (item, response, status, headers) => {
         if (response) {
-          const res: any = JSON.parse(response);
+          const res = JSON.parse(response);
           const updatedMember = {...this.member()}
           updatedMember.photos.push(res);
           this.memberChange.emit(updatedMember);
+          if (res.isMain) {
+            const user = this.accountService.currentUser();
+            if (user) {
+              user.photoUrl = res.photoUrl;
+              this.accountService.setCurrentUser(user);
+            }
+            updatedMember.photoUrl = res.photoUrl;
+            updatedMember.photos.forEach((p: any) => {
+              if (p.isMain) p.isMain = false;
+              if (p.id === res.id) p.isMain = true;
+            });
+            this.memberChange.emit(updatedMember);
+          }
         }
       }
 }
