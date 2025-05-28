@@ -6,16 +6,19 @@ using AutoMapper;
 using System.Security.Claims;
 using API.Extentions;
 using API.Entities;
+using API.Helpers;
 
 namespace API.Controllers;
 [Authorize]
 public class UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService) : BaseAPIController
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
     {
-        var user = await userRepository.GetMembersAsync();
-        if (user == null) { return NotFound(); }
+        var user = await userRepository.GetMembersAsync(userParams);
+        if (user == null) return NotFound("No user found");
+        var currentUser = await userRepository.GetMembersAsync(userParams);
+        Response.AddPaginationHeader(user);
         return Ok(user);
     }
 
