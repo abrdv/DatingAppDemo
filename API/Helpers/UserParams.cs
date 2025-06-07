@@ -3,16 +3,9 @@ using CloudinaryDotNet.Actions;
 
 namespace API.Helpers;
 
-public class UserParams
+public class UserParams: PaginationParams
 {
-    private int MaxPageSize = 50;
-    public int PageNumber { get; set; } = 1; // Default page number
-    private int _pageSize = 10; // Default page size
-    public int PageSize
-    {
-        get => _pageSize;
-        set => _pageSize = (value > MaxPageSize) ? MaxPageSize : value; // Limit the maximum page size
-    }
+
 
     public string? CurrentUsername { get; set; } // Username of the current user
     public string? Gender { get; set; } //
